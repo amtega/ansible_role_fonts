@@ -1,4 +1,6 @@
 ---
 # Role default lower priority variables
 
-fonts_dowload_url: https://www.example.com/download/Ttf_font.zip
+fonts_download_url: https://www.example.com/download/Ttf_font.zip
+
+fonts_download_dir: /tmp/

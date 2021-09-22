@@ -1,1 +1,22 @@
 ---
+fonts_default_filename: >-
+    {{ fonts_download_url | urlsplit('path') | basename | splitext | first }}
+
+fonts_default_extension: >-
+    {{ fonts_download_url | urlsplit('path') | basename | splitext | last }}
+
+
+fonts_default_artifact:
+  id: "{{ fonts_default_filename }}"
+  type: "{{ fonts_download_url | urlsplit('scheme') }}"
+  host: >-
+    {{ fonts_download_url | urlsplit('scheme')
+       + "://"
+       + fonts_download_url | urlsplit('netloc') }}
+  path: "{{ fonts_download_url | urlsplit('path') }}"
+  file: "{{ fonts_download_url | urlsplit('path') | basename }}"
+  dest: "{{ fonts_download_dir }}"
+
+  fonts_artifact_overrrides: >-
+    {{ ( fonts_default_extension == 'ttf')
+    }}
