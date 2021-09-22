@@ -1,0 +1,19 @@
+---
+# Role tasks
+
+- name: Check python installation
+  stat:
+    path: "{{ artifact_fact_file }}"
+  register: fonts_installation_check
+
+- name: Install fonts
+  include_tasks: install.yml
+  when:
+    - not font_installation_check.stat.exists
+    - font_state == "present"
+
+- name: Uninstall fonts
+  include_tasks: uninstall.yml
+  when:
+    - font_installation_check.stat.exists
+    - font_state == "absent"

@@ -1,0 +1,14 @@
+---
+# Role install tasks
+
+- name: Setup proxy
+  include_role:
+    name: amtega.proxy_client
+  vars:
+    proxy_client_permanent: no
+  when: python_use_proxy | bool
+
+- block:
+  
+
+  environment: "{{ proxy_client_environment | default({}) }}"

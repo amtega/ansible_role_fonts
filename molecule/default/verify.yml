@@ -1,0 +1,7 @@
+---
+
+- name: Verify
+  hosts: molecule_hosts
+  gather_facts: no
+  tasks:
+    - debug: msg="to_do"
