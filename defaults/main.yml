@@ -1,14 +1,35 @@
 ---
 # Role default lower priority variables
 
+# Url from where to download the font file. It should point to a .ttf file or
+# a compressed file compatible with the ansible unarchive module.
 fonts_download_url: https://www.example.com/download/Ttf_font.zip
 
+# Default directory to install O.S. fonts
 fonts_install_dir: /usr/share/fonts
 
-fonts_download_base_dir: /tmp/ttf_fonts_download
-
+# The role creates a subdirectory that will contain the downloaded fonts
+# in the event that a compressed file is passed to it.
+# The default is the name of the file.
 fonts_subdir: >-
   {{ ( fonts_extension == 'ttf')
-     | ternary("", fonts_default_filename) }}
+  | ternary("", fonts_default_filename) }}
 
+# Directory to donwload fonts files. Unarchive files are created here if needed.
+fonts_download_base_dir: /tmp/ttf_fonts_download
+
+# Flag to control role vervosity
 fonts_no_log: yes
+
+# By default, the role setups a default artifact that downloads the the desired
+# font file from a http / https url and stores this artifact in
+# fonts_default_artifact variable.
+#
+# If you want provide alternative method to download the file, such as maven
+# coordenates or git url, you can provide an artifact with info. 
+#
+# Take a look to `amtega.artifact` role documentation to known about supported
+# types of artifacts, their specific settings and how to configure a proxy if
+# necessary
+
+# fonts_artifact:
