@@ -5,6 +5,8 @@ fonts_download_url: https://www.example.com/download/Ttf_font.zip
 
 fonts_install_dir: /usr/share/fonts
 
+fonts_download_base_dir: /tmp/ttf_fonts_download
+
 fonts_subdir: >-
   {{ ( fonts_extension == 'ttf')
      | ternary("", fonts_default_filename) }}

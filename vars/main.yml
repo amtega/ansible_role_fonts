@@ -5,8 +5,6 @@ fonts_default_filename: >-
 fonts_extension: >-
     {{ fonts_download_url | urlsplit('path') | basename | splitext | last }}
 
-fonts_download_base_dir: /tmp/ttf_fonts_download
-
 fonts_download_dir: "{{ fonts_download_base_dir }}/{{ fonts_default_filename }}"
 
 
