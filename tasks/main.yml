@@ -1,2 +1,28 @@
 ---
 # Role tasks
+
+- block:
+
+    - name: Create download directory
+      file:
+        path: "{{ fonts_download_dir }}"
+        state: directory
+        mode: 0755
+
+    - name: Download fonts
+      include_role:
+        name: amtega.artifact
+
+
+    - name: Install fonts
+      include_tasks: install.yml
+      when: artifact_result[ artifact.id ].changed
+
+  when:  ansible_local['artifact_' + artifact.id] is undefined
+  vars:
+    artifact: >-
+      {{ fonts_artifact
+         | default(fonts_default_artifact)
+         | combine(fonts_artifact_overrrides) }}
+
+    fonts_artifact_install_check: "artifact_{{ artifact.id }}"

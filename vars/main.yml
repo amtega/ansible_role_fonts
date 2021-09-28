@@ -1,2 +1,36 @@
 ---
-# Role variables
+fonts_default_filename: >-
+    {{ fonts_download_url | urlsplit('path') | basename | splitext | first }}
+
+fonts_extension: >-
+    {{ fonts_download_url | urlsplit('path') | basename | splitext | last }}
+
+fonts_download_dir: "{{ fonts_download_base_dir }}/{{ fonts_default_filename }}"
+
+
+fonts_default_artifact:
+  id: "{{ fonts_default_filename }}"
+  type: "{{ fonts_download_url | urlsplit('scheme') }}"
+  host: >-
+    {{ fonts_download_url | urlsplit('scheme')
+       + "://"
+       + fonts_download_url | urlsplit('netloc') }}
+  path: "{{ fonts_download_url | urlsplit('path') | dirname }}"
+  file: "{{ fonts_download_url | urlsplit('path') | basename }}"
+  dest: "{{ fonts_download_dir }}"
+  no_log: "{{ fonts_no_log }}"
+
+fonts_single_file_override:
+  state: present
+
+fonts_compress_file_overrride:
+  unarchive: yes
+  unarchive_remove: yes
+  state: present
+
+fonts_artifact_absent_overrides:
+  state: absent
+
+fonts_artifact_overrrides: >-
+  {{ ( fonts_extension == 'ttf')
+     | ternary(fonts_single_file_override, fonts_compress_file_overrride) }}
