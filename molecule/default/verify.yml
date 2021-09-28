@@ -4,4 +4,15 @@
   hosts: molecule_hosts
   gather_facts: no
   tasks:
-    - debug: msg="Verify to be done"
+
+    - name: Register font info
+      command: 'fc-list'
+      changed_when: no
+      args:
+        warn: no
+      register: fonts_install_result
+
+    - name: Verify font is instaled
+      assert:
+        that:
+          - fonts_install_result.stdout is search('Xunta Sans')
