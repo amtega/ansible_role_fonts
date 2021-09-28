@@ -1,0 +1,53 @@
+---
+# Role install tasks
+- name: Search for ttf files
+  find:
+    paths: "{{ fonts_download_dir }}"
+    file_type: file
+    use_regex: no
+    recurse: yes
+    patterns:
+      - "*.ttf"
+  register: fonts_find_result
+
+- name: Processing found files
+  when: fonts_find_result.matched > 0
+  block:
+    - name: Determine destination directoy
+      set_fact:
+        fonts_dest_dir: >-
+          {{ ( fonts_subdir == "" )
+             | ternary(fonts_install_dir,
+                       fonts_install_dir
+                       + "/"
+                       + fonts_subdir) }}
+
+    - name: create destination dir
+      file:
+        path: "{{ fonts_dest_dir }}"
+        state: directory
+        mode: 0755
+
+    - name: copy fonts files
+      copy:
+        src: "{{ font_file.path }}"
+        dest: "{{ fonts_dest_dir }}"
+        remote_src: yes
+        mode: 0644
+      loop: "{{ fonts_find_result.files }}"
+      loop_control:
+        loop_var: font_file
+
+    - name: Install fontconfig
+      yum:
+        name: fontconfig
+        state: present
+
+    - name: Reload fonts cache
+      command: 'fc-cache -f -v'
+      changed_when: no
+
+- name: Clean download directory
+  file:
+    path: "{{ fonts_download_dir }}"
+    state: absent
