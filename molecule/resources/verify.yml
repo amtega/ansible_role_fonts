@@ -1,0 +1,16 @@
+---
+
+- name: Verify
+  hosts: molecule_hosts
+  gather_facts: no
+  tasks:
+    - name: Gather font info
+      command: fc-list
+      changed_when: no
+      args:
+        warn: no
+      register: gather_fonts_result
+
+    - name: Verify fonts are instaled
+      assert:
+        that: gather_fonts_result.stdout is search("codeface/FreeMono")

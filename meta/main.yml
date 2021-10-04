@@ -4,7 +4,7 @@ galaxy_info:
   role_name: fonts
   namespace: amtega
   author: José Enrique Mourón Regueira
-  description: Install ttf fonts into O.S.
+  description: Setup fonts
   company: AMTEGA - Xunta de Galicia
   license: GPLv3 or EUPL
   min_ansible_version: 2.10
@@ -19,7 +19,6 @@ galaxy_info:
         - 34
   galaxy_tags:
     - fonts
-    - ttf
 
 dependencies:
   - role: amtega.check_platform
@@ -29,9 +28,16 @@ dependencies:
         fedora: 33
         redhat: 7
 
+  - role: amtega.packages
+    vars:
+      packages_os:
+        all:
+          all:
+            fontconfig: present
+
   - role: amtega.proxy_client
-    tags:
-      - never
+    vars:
+      proxy_client_permanent: no
 
   - role: amtega.artifact
     tags:
