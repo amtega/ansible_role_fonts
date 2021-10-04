@@ -1,10 +1,6 @@
 ---
 # Role default lower priority variables
 
-# URL with the fonts to setup
-
-fonts_download_url: https://www.example.com/download/myfonts.zip
-
 # Fonts destination directory within system fonts path
 
 fonts_dest_dir: myfonts
@@ -19,17 +15,19 @@ fonts_files_extensions:
   - ttf
   - otf
 
-# The role will try to identify the download artifact from `fonts_download_url`
-# variable. The artfiact can be a single font file or an archive with multiple
-# font files.
-#
-# If you want to customize the artifact you can use `fonts_artifact` variable.
+# Artifact pointing to the fonts to setup. The artifact can be a single font
+# file or an archive with multiple font files.
 #
 # Take a look to `amtega.artifact` role documentation to known about supported
 # types of artifacts, their specific settings and how to configure a proxy if
 # necessary
-#
-#fonts_artifact:
+
+fonts_artifact:
+  id: fonts_codeface
+  type: https
+  host: https://github.com
+  path: /chrissimpkins/codeface/releases/download/font-collection
+  file: codeface-fonts.zip
 
 # Hide sensitive information
 

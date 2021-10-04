@@ -17,7 +17,12 @@ This is an example playbook:
   roles:
     - role: amtega.fonts
       vars:
-        fonts_download_url: https://www.example.com/download/myfonts.zip
+        fonts_artifact:
+          id: fonts_codeface
+          type: https
+          host: https://github.com
+          path: chrissimpkins/codeface/raw/master/fonts/free-mono
+          file: FreeMono.ttf
 ```
 
 ## Testing

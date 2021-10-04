@@ -54,16 +54,6 @@ provisioner:
     hosts:
       molecule_hosts:
         vars:
-          fonts_download_host: https://github.com
-          fonts_download_path: >-
-            /chrissimpkins/codeface/releases/download/font-collection
-          fonts_download_file: codeface-fonts.zip
-          fonts_download_url: >-
-            {{ fonts_download_host
-               + "/"
-               + fonts_download_path
-               + "/"
-               + fonts_download_file }}
           fonts_dest_dir: codeface
           fonts_no_log: no
       molecule_hosts_fedora:

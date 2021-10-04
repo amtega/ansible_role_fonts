@@ -1,18 +1,5 @@
 ---
 
-# URL vars
-
-fonts_url_scheme: "{{ fonts_download_url | urlsplit('scheme') }}"
-
-fonts_url_host: >-
-  {{ fonts_url_scheme }}://{{ fonts_download_url | urlsplit("netloc") }}
-
-fonts_url_path: "{{ fonts_download_url | urlsplit('path') }}"
-fonts_url_filename: "{{ fonts_url_path | basename | splitext | first }}"
-
-fonts_url_extension: >-
-  {{ fonts_url_path | basename | splitext | last | regex_replace("\.", "") }}
-
 # Directory where to install fonts
 
 fonts_system_dir: /usr/share/fonts
@@ -20,32 +7,30 @@ fonts_full_dest_dir: "{{ fonts_system_dir }}/{{ fonts_dest_dir }}"
 
 # Artifact vars
 
+fonts_asrtifact_extension: >-
+  {{ fonts_artifact.file | splitext | last | regex_replace("\.", "") }}
+
 fonts_default_artifact:
-  id: "fonts_{{ fonts_url_filename | lower }}"
-  type: "{{ fonts_url_scheme }}"
-  host: "{{ fonts_url_host }}"
-  path: "{{ fonts_url_path | dirname }}"
+  id: "fonts_{{ fonts_dest_dir }}"
 
 fonts_artifact_common_overrides:
-  notify: reload fonts cache
+  notify: "reload fonts cache"
   tmp_dest: "{{ fonts_temp_dir }}"
   no_log: "{{ fonts_no_log }}"
 
 fonts_artifact_single_file_overrides:
   dest: "{{ fonts_full_dest_dir }}"
-  file: "{{ fonts_url_path | basename }}"
   state: present
 
 fonts_artifact_archive_file_overrides:
   dest: "{{ fonts_temp_dir }}"
-  file: "{{ fonts_url_path | basename }}"
   unarchive: yes
   unarchive_remove: yes
   unarchive_creates: "{{ fonts_full_dest_dir }}"
   state: present
 
 fonts_artifact_specific_overrrides: >-
-  {{ (fonts_url_extension in fonts_files_extensions)
+  {{ (fonts_asrtifact_extension in fonts_files_extensions)
      | ternary(fonts_artifact_single_file_overrides,
                fonts_artifact_archive_file_overrides) }}
 

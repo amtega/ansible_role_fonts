@@ -54,18 +54,13 @@ provisioner:
     hosts:
       molecule_hosts:
         vars:
-          fonts_download_host: https://github.com
-          fonts_download_path: >-
-            chrissimpkins/codeface/raw/master/fonts/free-mono/
-          fonts_download_file: FreeMono.ttf
-          fonts_download_url: >-
-            {{ fonts_download_host
-               + "/"
-               + fonts_download_path
-               + "/"
-               + fonts_download_file }}
           fonts_dest_dir: codeface
-          fonts_no_log: no
+          fonts_artifact:
+            id: fonts_codeface
+            type: https
+            host: https://github.com
+            path: /chrissimpkins/codeface/raw/master/fonts/free-mono
+            file: FreeMono.ttf
       molecule_hosts_fedora:
         vars:
           ansible_python_interpreter: /usr/bin/python3
