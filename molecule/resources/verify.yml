@@ -4,13 +4,15 @@
   hosts: molecule_hosts
   gather_facts: no
   tasks:
-    - name: Gather font info
-      command: fc-list
+
+    - name: Register font info
+      command: 'fc-list'
       changed_when: no
       args:
         warn: no
-      register: gather_fonts_result
+      register: fonts_install_result
 
-    - name: Verify fonts are instaled
+    - name: Verify font is instaled
       assert:
-        that: gather_fonts_result.stdout is search("codeface/FreeMono")
+        that:
+          - fonts_install_result.stdout is search('codeface/FreeMono')

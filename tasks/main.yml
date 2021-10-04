@@ -35,7 +35,7 @@
     - name: Cleanup
       include_role:
         name: amtega.artifact
-      when: fonts_url_extension not in fonts_files_extensions
+      when: fonts_asrtifact_extension not in fonts_files_extensions
       vars:
         artifact: "{{ fonts_artifact_absent }}"
 
