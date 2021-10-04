@@ -2,27 +2,42 @@
 # Role tasks
 
 - block:
-
-    - name: Create download directory
+    - name: Setup destination directory
       file:
-        path: "{{ fonts_download_dir }}"
+        path: "{{ fonts_full_dest_dir }}"
         state: directory
         mode: 0755
 
     - name: Download fonts
       include_role:
         name: amtega.artifact
+      vars:
+        artifact: "{{ fonts_artifact_present }}"
 
+    - name: Copy font files
+      copy:
+        src: "{{ fonts_file_item }}"
+        dest: "{{ fonts_full_dest_dir }}"
+        remote_src: yes
+        mode: 0644
+      loop: >-
+        {{ artifact_result[fonts_artifact_present.id].unarchived_files
+           | default([])
+           | select("search", fonts_files_extensions
+                              | map("regex_replace", "^(.*)$", "\.\1")
+                              | list
+                              | join("|"))
+           | list }}
+      loop_control:
+        loop_var: fonts_file_item
+        label: "{{ fonts_file_item | basename }}"
 
-    - name: Install fonts
-      include_tasks: install.yml
-      when: artifact_result[ artifact.id ].changed
+    - name: Cleanup
+      include_role:
+        name: amtega.artifact
+      when: fonts_url_extension not in fonts_files_extensions
+      vars:
+        artifact: "{{ fonts_artifact_absent }}"
 
-  when:  ansible_local['artifact_' + artifact.id] is undefined
-  vars:
-    artifact: >-
-      {{ fonts_artifact
-         | default(fonts_default_artifact)
-         | combine(fonts_artifact_overrrides) }}
-
-    fonts_artifact_install_check: "artifact_{{ artifact.id }}"
+  tags:
+    - role::fonts
