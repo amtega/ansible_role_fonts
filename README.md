@@ -1,24 +1,12 @@
-# Ansible <!-- this role name --> role
+# Ansible fonts role
 
-This is an [Ansible](http://www.ansible.com) role which install true type fonts into O.S. fon a url
-
-
-## Requirements
-
-[Ansible 2.10+](http://docs.ansible.com/ansible/latest/intro_installation.html)
+This is an [Ansible](http://www.ansible.com) role which install true type fonts.
 
 ## Role Variables
 
-
-
 A list of all the default variables for this role is available in `defaults/main.yml`.
 
-
-
-
 ## Usage
-
-
 
 This is an example playbook:
 
@@ -28,8 +16,8 @@ This is an example playbook:
 - hosts: all
   roles:
     - role: amtega.fonts
-      fonts_download_url: https://www.example.com/download/Ttf_font.zip
-
+      vars:
+        fonts_download_url: https://www.example.com/download/myfonts.zip
 ```
 
 ## Testing
@@ -40,7 +28,6 @@ Tests are based on [molecule with docker containers](https://molecule.readthedoc
 cd amtega.fonts
 
 molecule test --all
-
 ```
 
 ## License
