@@ -2,6 +2,6 @@
 # Role handlers
 
 - name: Reload fonts cache
-  command: "fc-cache -f -v"
+  ansible.builtin.command: "fc-cache -f -v"
   listen:
     - reload fonts cache
