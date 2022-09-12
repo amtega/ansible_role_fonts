@@ -6,13 +6,13 @@
   tasks:
 
     - name: Register font info
-      command: 'fc-list'
+      ansible.builtin.command: 'fc-list'
       changed_when: no
       args:
         warn: no
       register: fonts_install_result
 
     - name: Verify font is instaled
-      assert:
+      ansible.builtin.assert:
         that:
           - fonts_install_result.stdout is search('codeface/FreeMono')
